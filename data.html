@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="https://d3js.org/d3.v3.js"></script>
+</head>
+<body>
+    <script>
+        d3.csv("5.csv", function(dataSet){
+            var f =d3.csv.format(dataSet);
+            //console.log(f);
+            var parseCSV = d3.csv.parseRows(f);
+            //console.log(parseCSV);
+            //1.首列是欄位名稱,縣市名稱,必須另存cityary,成為city的對應值            
+            //console.log(parseCSV[0]);
+            var row = parseCSV[0];
+            var cityary = [];
+            for(var i=0;i<row.length;i++){
+                if(row[i]!=''){
+                    cityary[i] = row[i];
+                }                
+            }
+            //console.log(cityary);
+                        
+            var ds = [];
+            var tmp,cityname,amt;
+            //2.第二列起(i從1開始)為各年度的金額,有幾個縣市即轉成幾個 資料集object
+            for(var i=1;i<parseCSV.length;i++){
+                row = parseCSV[i];
+                y = row[0]; //第一欄是年別
+                for(var j=1;j<row.length;j++){ //第二欄起,是同年度各縣市的金額
+                    if(row[j]!=''){
+                        cityname = cityary[j];
+                        amt = row[j];
+                        tmp = { year:y, city:cityname, amount:amt };
+                    }
+                    ds.push(tmp);
+                }                
+            }
+            console.log(ds);
+           
+        });
+        
+    </script>
+
+
+
+</body>
+</html>
